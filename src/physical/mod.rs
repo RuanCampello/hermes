@@ -23,6 +23,23 @@ pub enum Checksum {
     Tx,
 }
 
+/// Interface for sending and receiving raw frames.
+pub trait Device {
+    type RxToken<'t>: RxToken
+    where
+        Self: 't;
+    type TxToken<'t>: TxToken
+    where
+        Self: 't;
+
+    fn receive(&mut self) -> Option<(Self::RxToken<'_>, Self::TxToken<'_>)>;
+    fn transmit(&mut self) -> Option<Self::TxToken<'_>>;
+}
+
+pub trait RxToken {}
+
+pub trait TxToken {}
+
 impl Checksum {
     /// Returns whether the checksum should be computed when sending.
     pub const fn tx(&self) -> bool {
