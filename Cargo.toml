@@ -1,0 +1,8 @@
+[package]
+name = "hermes"
+description = "Hermes is a fast networking implementation with `no_std`"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+defmt = { version = "1.0.1", optional = true }
