@@ -3,6 +3,8 @@
 
 use crate::time::Instant;
 
+mod packet_capture;
+
 /// Metadata of a packet.
 #[derive(Debug, Default, PartialEq, Eq, Hash, Clone, Copy)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]

@@ -2,7 +2,9 @@
 name = "hermes"
 description = "Hermes is a fast networking implementation with `no_std`"
 version = "0.1.0"
+rust-version = "1.85"
 edition = "2024"
 
 [dependencies]
 defmt = { version = "1.0.1", optional = true }
+byteorder = { version = "1.0.5" }

@@ -29,6 +29,14 @@ impl Instant {
         }
     }
 
+    pub const fn secs(&self) -> i64 {
+        self.micros / 1000000
+    }
+
+    pub const fn micros(&self) -> i64 {
+        self.micros % 1000000
+    }
+
     const fn from_micros_const(micros: i64) -> Self {
         Self { micros }
     }
