@@ -4,7 +4,7 @@
 use crate::time::Instant;
 
 /// Metadata of a packet.
-#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+#[derive(Debug, Default, PartialEq, Eq, Hash, Clone, Copy)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PacketMetadata {
     pub id: u32,
@@ -82,12 +82,25 @@ pub trait Device {
     fn transmit(&mut self, timestamp: Instant) -> Option<Self::TxToken<'_>>;
 
     /// Describe the device capabilities.
-    fn capabilities(&self) -> Option<()>;
+    fn capabilities(&self) -> DeviceCapabilities;
 }
 
-pub trait RxToken {}
+/// A token to receive a single packet.
+pub trait RxToken {
+    /// Consumes the token to receive the packat.
+    fn consume<R, F: FnOnce(&[u8])>(self, f: F) -> R;
 
-pub trait TxToken {}
+    /// Returns the packet ID associated with the frame received by this token.
+    fn metadata(&self) -> PacketMetadata {
+        PacketMetadata::default()
+    }
+}
+
+/// A token to send a single packet.
+pub trait TxToken {
+    /// Consumes the token to send the packet.
+    fn consume<R, F: FnOnce(&mut [u8]) -> R>(self, len: usize, f: F) -> R;
+}
 
 impl Checksum {
     /// Returns whether the checksum should be computed when sending.
